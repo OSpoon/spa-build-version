@@ -1,19 +1,32 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <img alt="Vue logo" src="./assets/logo.png" />
+    <div>
+      <button class="button" @click="versionCheck">检查更新</button>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import inspector from "./version-inspector";
 
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
-  }
-}
+  name: "App",
+  methods: {
+    versionCheck() {
+      inspector().then((isConsistent) => {
+        if (!isConsistent) {
+          const isReload = window.confirm(
+            "检测到本地版本和服务器版本不一致,点击确定更新页面 "
+          );
+          if (isReload) {
+            window.location.reload();
+          }
+        }
+      });
+    },
+  },
+};
 </script>
 
 <style>
@@ -24,5 +37,11 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+.button {
+  width: 100px;
+  height: 35px;
+  font-size: 18px;
+  color: #555;
 }
 </style>
